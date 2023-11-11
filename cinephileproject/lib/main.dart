@@ -2,6 +2,7 @@
 
 import 'package:cinephileproject/models/movies.dart';
 import 'package:cinephileproject/models/user.dart';
+import 'package:cinephileproject/screens/adminModule.dart';
 import 'package:cinephileproject/screens/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CinephileApp',
-      home: Splash(),
+      home: AdminModule(),
       debugShowCheckedModeBanner: false,
     );
   }

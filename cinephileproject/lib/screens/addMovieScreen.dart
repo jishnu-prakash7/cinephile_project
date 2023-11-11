@@ -72,12 +72,9 @@ class _addMovieScreenState extends State<addMovieScreen> {
                 children: [
                   addMovieTitile('Thumbnail'),
                   Container(
-                      height: 100,
-                      width: 150,
+                      height: 230,
+                      width: MediaQuery.sizeOf(context).width,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/add-image (1).png'),
-                        ),
                         border: Border.all(width: 2, color: Colors.grey),
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -96,7 +93,7 @@ class _addMovieScreenState extends State<addMovieScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : null,
+                            : Icon(Icons.add_a_photo,color: Colors.white),
                       )),
                   addMovieTitile('Movie Title'),
                   addMovieTextField(
@@ -199,7 +196,7 @@ class _addMovieScreenState extends State<addMovieScreen> {
                         children: [
                           addMovieTitile('Genre'),
                           addMovieTextField(
-                            'Enter genre',
+                            'eg:Action,Comedy',
                             genreController,
                             'genre is needed',
                           )
@@ -283,14 +280,14 @@ class _addMovieScreenState extends State<addMovieScreen> {
         return;
       } else {
         moviesBox.add(movies(
-            title: titleController.text,
+            title: titleController.text.trim(),
             releaseyear: year,
-            movielanguage: languageController.text,
-            time: int.parse(timeController.text),
-            moviedirector: directorController.text,
-            movierating: double.parse(ratingcontroller.text),
-            moviegenre: genreController.text,
-            review: reviewcontroller.text,
+            movielanguage: languageController.text.trim(),
+            time: int.parse(timeController.text.trim()),
+            moviedirector: directorController.text.trim(),
+            movierating: double.parse(ratingcontroller.text.trim()),
+            moviegenre: genreController.text.trim(),
+            review: reviewcontroller.text.trim(),
             imageUrl: _selectedImage!.path));
 
         titleController.clear();
