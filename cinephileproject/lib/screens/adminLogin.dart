@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cinephileproject/screens/homeScreen.dart';
+import 'package:cinephileproject/screens/adminModule.dart';
 import 'package:cinephileproject/screens/userLoginScreen.dart';
 import 'package:cinephileproject/widgets/loginAndSignup.dart';
 import 'package:cinephileproject/widgets/mainRefactoring.dart';
@@ -12,6 +12,9 @@ class AdminLogin extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final namecontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
+  RegExp get _nameRegex => RegExp(r'^[a-zA-Z ]+$');
+  RegExp get _passwordRegex => RegExp(r'^(?=.*[0-9].*[0-9].*[0-9])[0-9]+$');
+  
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +59,14 @@ class AdminLogin extends StatelessWidget {
                         children: [
                           textabovetextfield('Name'),
                           LoginTextformField('Enter Name', 'Name is needed !',
-                              namecontroller, TextInputType.name, false),
+                              namecontroller, TextInputType.name, false,Icons.person,'Name contain only alphabets',_nameRegex),
                           textabovetextfield('Password'),
                           LoginTextformField(
                               'Enter Password',
                               'Password is needed !',
                               passwordcontroller,
                               TextInputType.number,
-                              true),
+                              true,Icons.lock,'at least 3 characters Needed !',_passwordRegex),
                         ],
                       ),
                       Padding(
@@ -83,7 +86,7 @@ class AdminLogin extends StatelessWidget {
                                 if (name == 'jishnu' && password == '123') {
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(builder: (context) {
-                                    return HomeScreen();
+                                    return AdminModule();
                                   }));
                                 }
                               }

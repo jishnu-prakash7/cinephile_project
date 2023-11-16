@@ -16,7 +16,9 @@ Widget maintitle() {
         text: 'p',
         style: GoogleFonts.ubuntu(
             textStyle: TextStyle(
-                color: Colors.red, fontSize: 35, fontWeight: FontWeight.bold))),
+                color: Colors.green,
+                fontSize: 35,
+                fontWeight: FontWeight.bold))),
     TextSpan(
         text: 'hile',
         style: GoogleFonts.ubuntu(

@@ -31,6 +31,9 @@ class _UserLoginState extends State<UserLogin> {
 
   late Box userBox;
 
+  RegExp get _emailRegex => RegExp(r'^\S+@\S+$');
+  RegExp get _passwordRegex => RegExp(r'^(?=.*[0-9].*[0-9].*[0-9])[0-9]+$');
+
   @override
   void initState() {
     super.initState();
@@ -88,14 +91,20 @@ class _UserLoginState extends State<UserLogin> {
                                 'Email is needed!',
                                 emailcontroller,
                                 TextInputType.emailAddress,
-                                false),
+                                false,
+                                Icons.email_sharp,
+                                'Enter valid Email',
+                                _emailRegex),
                             textabovetextfield('Password'),
                             LoginTextformField(
                                 'Enter Password',
                                 'Password is needed!',
                                 passwordcontroller,
                                 TextInputType.number,
-                                true),
+                                true,
+                                Icons.lock,
+                                'Enter valid password',
+                                _passwordRegex),
                           ],
                         ),
                         Padding(

@@ -5,16 +5,26 @@ import 'package:google_fonts/google_fonts.dart';
 
 // Textformfield in login and signup page
 
-Widget LoginTextformField(String hintText, String validatormessage,
-    TextEditingController controllers,TextInputType textType,bool value) {
+Widget LoginTextformField(
+    String hintText,
+    String validatormessage,
+    TextEditingController controllers,
+    TextInputType textType,
+    bool value,
+    IconData preIcon,
+    String validationmessage, 
+    RegExp regex) {
   return Container(
     width: 230,
     child: TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: value,
       keyboardType: textType,
       controller: controllers,
       validator: (value) {
-        if (value!.isEmpty) {
+        if (!regex.hasMatch(value!)) {
+          return validationmessage;
+        } else if (value.isEmpty) {
           return validatormessage;
         } else {
           return null;

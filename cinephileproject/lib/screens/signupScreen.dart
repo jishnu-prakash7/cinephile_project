@@ -25,6 +25,10 @@ class _SignupState extends State<Signup> {
 
   final passwordcontroller = TextEditingController();
 
+  RegExp get _emailRegex => RegExp(r'^\S+@\S+$');
+  RegExp get _nameRegex => RegExp(r'^[a-zA-Z ]+$');
+  RegExp get _passwordRegex => RegExp(r'^(?=.*[0-9].*[0-9].*[0-9])[0-9]+$');
+
   late Box userBox;
 
   @override
@@ -77,22 +81,29 @@ class _SignupState extends State<Signup> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             textabovetextfield('Name'),
-                            LoginTextformField('Enter Name', 'Name is needed !',
-                                namecontroller, TextInputType.name, false),
+                            LoginTextformField(
+                                'Enter Name',
+                                'Name is needed !',
+                                namecontroller,
+                                TextInputType.name,
+                                false,
+                                Icons.person_2_sharp,'Name only contain alphabets',_nameRegex),
                             textabovetextfield('Email'),
                             LoginTextformField(
                                 'Enter Email',
                                 'Email is needed !',
                                 emailcontroller,
                                 TextInputType.emailAddress,
-                                false),
+                                false,
+                                Icons.email_sharp,'Valid Email is Needed !',_emailRegex),
                             textabovetextfield('Password'),
                             LoginTextformField(
                                 'Enter Password',
                                 'Password is needed !',
                                 passwordcontroller,
                                 TextInputType.number,
-                                true),
+                                true,
+                                Icons.lock,'Password contain atleast 3 charecters',_passwordRegex),
                           ],
                         ),
                         Padding(

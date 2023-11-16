@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-//title of fields
+//Title of fields
 
-Widget addMovieTitile(String name) {
+Widget addAndEditMovieTitile(String name) {
   return Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 8),
     child: Text(
@@ -17,13 +17,12 @@ Widget addMovieTitile(String name) {
   );
 }
 
-//textformfield
+//Textformfield
 
-Widget addMovieTextField(
+Widget addAndEditMovieTextField(
   String hintText,
   TextEditingController controller,
   String errormessage,
-  //  String value
 ) {
   return Container(
     width: 170,
@@ -31,9 +30,6 @@ Widget addMovieTextField(
     child: Column(
       children: [
         TextFormField(
-          // onSaved: (newValue) {
-          //   value = newValue.toString();
-          // },
           validator: (value) {
             if (value!.isEmpty) {
               return errormessage;

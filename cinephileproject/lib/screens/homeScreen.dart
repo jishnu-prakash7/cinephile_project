@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:cinephileproject/models/movies.dart';
-import 'package:cinephileproject/screens/addMovieScreen.dart';
 import 'package:cinephileproject/screens/detailsScreen.dart';
 import 'package:cinephileproject/screens/userLoginScreen.dart';
 import 'package:cinephileproject/widgets/mainRefactoring.dart';
@@ -20,11 +19,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final searchController = TextEditingController();
+  List<dynamic> searchMovie = [];
+
   late Box moviesBox;
+
+  void search() {
+    String query = searchController.text.toLowerCase();
+    if (query.isNotEmpty) {
+      searchMovie = moviesBox.values
+          .where((movie) => movie.title.toLowerCase().contains(query)||movie.releaseyear.toString().contains(query))
+          .toList();
+    } else {
+      searchMovie = List.from(moviesBox.values);
+    }
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     moviesBox = Hive.box('movies');
+    searchMovie = List.from(moviesBox.values);
   }
 
   @override
@@ -46,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 350,
                 height: 45,
                 child: TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      search();
+                    });
+                  },
+                  controller: searchController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(0),
@@ -159,90 +181,79 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return addMovieScreen();
-                  }));
-                },
-                child: Text(
-                  'Add Movie',
-                  style: GoogleFonts.ubuntu(
-                      textStyle: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w300,
-                          color: Color.fromARGB(255, 201, 200, 200))),
-                ),
-              ),
-            ),
           ],
         ),
       ),
-      body: ListView.builder(
-          itemCount: moviesBox.length,
-          itemBuilder: (context, index) {
-            final movie = moviesBox.getAt(index) as movies;
-            return Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return DetailsScreen(
-                          movie: movie,
-                        );
-                      }));
-                    },
-                    child: SizedBox(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            File(movie.imageUrl),
-                            fit: BoxFit.cover,
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return DetailsScreen(
-                            movie: movie,
-                          );
-                        }));
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            '${movie.title} (${movie.releaseyear})',
-                            style: GoogleFonts.ubuntu(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+      body: searchMovie.isEmpty
+          ? Center(
+              child: Text(
+                'No Movies Found',
+                style: GoogleFonts.ubuntu(color: Colors.white),
               ),
-            );
-          }),
+            )
+          : ListView.builder(
+              // reverse: true,
+              itemCount: searchMovie.length,
+              itemBuilder: (context, index) {
+                final movie = searchMovie[index];
+                return Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return DetailsScreen(
+                              movie: movie,
+                            );
+                          }));
+                        },
+                        child: SizedBox(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.file(
+                                File(movie.imageUrl),
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return DetailsScreen(
+                                movie: movie,
+                              );
+                            }));
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                '${movie.title} (${movie.releaseyear})',
+                                style: GoogleFonts.ubuntu(
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
     ));
   }
 
-  signout(BuildContext ctx) async {
+  void signout(BuildContext ctx) async {
     final sharedpref = await SharedPreferences.getInstance();
     await sharedpref.clear();
     Navigator.of(context).pushAndRemoveUntil(

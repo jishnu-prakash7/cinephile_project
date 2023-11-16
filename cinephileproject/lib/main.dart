@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CinephileApp',
-      home: AdminModule(),
+      home: Splash(),
       debugShowCheckedModeBanner: false,
     );
   }
